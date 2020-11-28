@@ -3,16 +3,16 @@
 This Python module was created to streamline the acquisition of credentials to access Beacon's frontend and API.
 
 ```
->>> from nswses_identity import beacon
+>>> from pybeacon import beacon_auth
 
 >>> BEACON_URL = 'https://beacon.ses.nsw.gov.au'
 >>> USERNAME = '4xxxxxxx'
 >>> PASSWORD = 'xxx'
 
->>> pickled_cookies = beacon.get_frontend_cookies(BEACON_URL, USERNAME, PASSWORD)
+>>> pickled_cookies = beacon_auth.get_frontend_cookies(BEACON_URL, USERNAME, PASSWORD)
 <pickled CookieJar>
 
->>> api_access_token = beacon.get_api_token(BEACON_URL, USERNAME, PASSWORD)
+>>> api_access_token = beacon_auth.get_api_token(BEACON_URL, USERNAME, PASSWORD)
 {'accessToken': token, 'expiresAt': '2020-11-27T00:00:00.000Z'}
 
 ```
@@ -25,10 +25,10 @@ The module provides two functions: `get_api_token` and `get_frontend_cookies`. B
 To make a request to the Beacon API, first acquire a token.
 
 ```
-from nswses_identity import beacon
+from pybeacon import beacon_auth
 import requests
 
-token = beacon.get_api_token(BEACON_URL, USERNAME, PASSWORD)
+token = beacon_auth.get_api_token(BEACON_URL, USERNAME, PASSWORD)
 ```
 
 The token is returned as a dictionary along with the expiration time. It is **highly** recommended that this token be cached to reduce load on the identity server.
@@ -45,10 +45,10 @@ response = requests.get('https://apibeacon.ses.nsw.gov.au/Api/v1/Jobs/xxxxxx', h
 To make a request to the Beacon frontend, first acquire session cookies and unpickle them.
 
 ```
-from nswses_identity import beacon
+from pybeacon import beacon_auth
 import requests
 
-cookies = pickle.load(beacon.get_frontend_cookies(BEACON_URL, USERNAME, PASSWORD))
+cookies = pickle.load(beacon_auth.get_frontend_cookies(BEACON_URL, USERNAME, PASSWORD))
 ```
 
 The unpickled cookies are represented as a CookieJar object. Again, it is **highly** recommended that these cookies be cached to reduce load on the identity server.
