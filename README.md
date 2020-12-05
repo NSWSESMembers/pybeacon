@@ -60,6 +60,7 @@ Pass these cookies to the Beacon frontend using the `cookies` parameter.
 response = requests.get('https://beacon.ses.nsw.gov.au/Jobs/', cookies=cookies)
 ```
 
+---
 ### Jobs
 Job functions generally take 3 parameters:
 * *ACCESS_TOKEN* - string
