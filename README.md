@@ -84,7 +84,7 @@ import requests
 
 token = beacon_auth.get_api_token(BEACON_URL, USERNAME, PASSWORD)
 
-job = jobs.acknowledge_job(ACCESS_TOKEN, JOB_ID, API_ENDPOINT)
+job = jobs.acknowledge_job(token.get('accessToken'), JOB_ID, API_ENDPOINT)
 ```
 
 The JSON response will contain the new status of the job (generally "Active"), and will be deserialised into a dictionary (not JSON like the example below) with the following schema:
@@ -107,7 +107,7 @@ import requests
 
 token = beacon_auth.get_api_token(BEACON_URL, USERNAME, PASSWORD)
 
-job = jobs.get_job(ACCESS_TOKEN, JOB_ID, API_ENDPOINT)
+job = jobs.get_job(token.get('accessToken'), JOB_ID, API_ENDPOINT)
 ```
 
 The JSON response from the API will be deserialised into a dictionary (not JSON like the example below) with the following schema:
