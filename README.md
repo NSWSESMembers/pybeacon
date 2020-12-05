@@ -48,6 +48,7 @@ To make a request to the Beacon frontend, first acquire session cookies and unpi
 ```
 from pybeacon import beacon_auth
 import requests
+import pickle
 
 cookies = pickle.load(beacon_auth.get_frontend_cookies(BEACON_URL, USERNAME, PASSWORD))
 ```
