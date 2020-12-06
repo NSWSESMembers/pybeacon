@@ -72,7 +72,7 @@ Job functions generally take 3 parameters:
     * Leading zeroes will be stripped
 * *API_ENDPOINT* - string, optional
     * If undefined, defaults to Prod Beacon.
-    * The provided token must match the specified environment e.g. to retrieve a job from Train Beacon, the specified token must  
+    * The provided token must match the specified environment e.g. to retrieve a job from Train Beacon, the token must be issued by Train Identity.
 
 #### `jobs.acknowledge_job`
 
