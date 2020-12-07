@@ -4,11 +4,6 @@ import pickle
 from requests_html import HTMLSession
 from urllib.parse import urlparse
 
-# Prod or Train Beacon can be specified here
-BEACON_URL = 'https://beacon.ses.nsw.gov.au'
-USERNAME = '4xxxxxxx'
-PASSWORD = 'xxx'
-
 
 # Helper to determine which Identity instance to use
 def _get_identity_env(response):
@@ -16,7 +11,7 @@ def _get_identity_env(response):
     return '{uri.scheme}://{uri.hostname}'.format(uri=parsed_uri)
 
 
-def _do_login(beacon_url, username, password):
+def _do_login(username, password, beacon_url):
     session = HTMLSession()
 
     try:
@@ -74,8 +69,8 @@ def _do_login(beacon_url, username, password):
         print(e)
 
 
-def get_api_token(beacon_url, username, password):
-    response = _do_login(beacon_url, username, password)
+def get_api_token(username, password, beacon_url='https://beacon.ses.nsw.gov.au'):
+    response = _do_login(username, password, beacon_url)
 
     bearer_token = {
         'accessToken': response.html.search('self.accessToken = \'{}\'')[0],
@@ -84,12 +79,9 @@ def get_api_token(beacon_url, username, password):
     return bearer_token
 
 
-def get_frontend_cookies(beacon_url, username, password):
-    response = _do_login(beacon_url, username, password)
+def get_frontend_cookies(username, password, beacon_url='https://beacon.ses.nsw.gov.au'):
+    response = _do_login(username, password, beacon_url)
 
     # Can be loaded into a new session with `session.cookies.update(pickle.load(cookies))`
     cookies = pickle.dumps(response.cookies)
     return cookies
-
-# if __name__ == "__main__":
-#     do_login(BEACON_URL, USERNAME, PASSWORD)

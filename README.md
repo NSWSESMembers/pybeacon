@@ -9,10 +9,10 @@ This Python module was created to streamline the acquisition of credentials to a
 >>> USERNAME = '4xxxxxxx'
 >>> PASSWORD = 'xxx'
 
->>> pickled_cookies = beacon_auth.get_frontend_cookies(BEACON_URL, USERNAME, PASSWORD)
+>>> pickled_cookies = beacon_auth.get_frontend_cookies(USERNAME, PASSWORD, BEACON_URL)
 <pickled CookieJar>
 
->>> api_access_token = beacon_auth.get_api_token(BEACON_URL, USERNAME, PASSWORD)
+>>> api_access_token = beacon_auth.get_api_token(USERNAME, PASSWORD, BEACON_URL)
 {'accessToken': token, 'expiresAt': '2020-11-27T00:00:00.000Z'}
 
 ```
@@ -21,6 +21,13 @@ The module provides two auth-related functions: `get_api_token` and `get_fronten
 
 ## Usage
 ### Auth
+* *USERNAME* - string
+    * Identity username
+* *PASSWORD* - string
+    * Identity password
+* *BEACON_URL* - string, optional
+    * If undefined, defaults to Prod Beacon (`https://beacon.ses.nsw.gov.au`).
+
 #### `beacon_auth.get_api_token`
 
 To make a request to the Beacon API, first acquire a token.
@@ -29,7 +36,7 @@ To make a request to the Beacon API, first acquire a token.
 from pybeacon import beacon_auth
 import requests
 
-token = beacon_auth.get_api_token(BEACON_URL, USERNAME, PASSWORD)
+token = beacon_auth.get_api_token(USERNAME, PASSWORD, BEACON_URL)
 ```
 
 The token is returned as a dictionary along with the expiration time. It is **highly** recommended that this token be cached to reduce load on the identity server.
@@ -50,7 +57,7 @@ from pybeacon import beacon_auth
 import requests
 import pickle
 
-cookies = pickle.load(beacon_auth.get_frontend_cookies(BEACON_URL, USERNAME, PASSWORD))
+cookies = pickle.load(beacon_auth.get_frontend_cookies(USERNAME, PASSWORD, BEACON_URL))
 ```
 
 The unpickled cookies are represented as a CookieJar object. Again, it is **highly** recommended that these cookies be cached to reduce load on the identity server.
@@ -70,9 +77,9 @@ Job functions generally take 3 parameters:
 * *JOB_ID* - string
     * This can take one of two forms: 12345678 or 1234-5678
     * Leading zeroes will be stripped
-* *API_ENDPOINT* - string, optional
-    * If undefined, defaults to Prod Beacon.
-    * The provided token must match the specified environment e.g. to retrieve a job from Train Beacon, the token must be issued by Train Identity.
+* *BEACON_API_URL* - string, optional
+    * If undefined, defaults to Prod Beacon (`https://beaconapi.ses.nsw.gov.au`).
+    * The provided token must match the specified environment e.g. to retrieve a job from Train Beacon, the token must have been issued by Train Identity.
 
 #### `jobs.acknowledge_job`
 
@@ -82,9 +89,9 @@ To acknowledge a job, first get a token (hopefully from persistent storage), the
 from pybeacon import beacon_auth
 import requests
 
-token = beacon_auth.get_api_token(BEACON_URL, USERNAME, PASSWORD)
+token = beacon_auth.get_api_token(USERNAME, PASSWORD, BEACON_URL)
 
-job = jobs.acknowledge_job(token.get('accessToken'), JOB_ID, API_ENDPOINT)
+job = jobs.acknowledge_job(token.get('accessToken'), JOB_ID, BEACON_API_ENDPOINT)
 ```
 
 The JSON response will contain the new status of the job (generally "Active"), and will be deserialised into a dictionary (not JSON like the example below) with the following schema:
@@ -105,9 +112,9 @@ To get the details of a job, first get a token (hopefully you've already persist
 from pybeacon import beacon_auth
 import requests
 
-token = beacon_auth.get_api_token(BEACON_URL, USERNAME, PASSWORD)
+token = beacon_auth.get_api_token(USERNAME, PASSWORD, BEACON_URL)
 
-job = jobs.get_job(token.get('accessToken'), JOB_ID, API_ENDPOINT)
+job = jobs.get_job(token.get('accessToken'), JOB_ID, BEACON_API_URL)
 ```
 
 The JSON response from the API will be deserialised into a dictionary (not JSON like the example below) with the following schema:
