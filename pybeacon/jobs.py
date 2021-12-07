@@ -27,3 +27,12 @@ def acknowledge_job(access_token, job_id, beacon_api_url="https://apibeacon.ses.
     response = requests.post(beacon_api_url + '/Api/v1/Jobs/{}/Acknowledge'.format(job_id),
                              headers=headers)
     return response.json()
+
+# Cancels the specified job, returns job details
+# Example response: {"Id":2,"Name":"Active","Description":"Job is under active management"}
+def cancel_job(access_token, job_id, beacon_api_url="https://apitrainbeacon.ses.nsw.gov.au"):
+    job_id = format_job_id(job_id)
+    headers = {'Authorization': 'Bearer {}'.format(access_token), 'Content-Type': 'application/x-www-form-urlencoded'}
+    body = {'Text':'Bulk Cancel','Date': datetime.now().isoformat()}
+    response = requests.post(beacon_api_url + '/Api/v1/Jobs/{}/Cancel'.format(job_id),headers=headers,data=body)
+    return response.json()
