@@ -118,7 +118,6 @@ job = jobs.cancel_job(token.get('accessToken'), JOB_ID, BEACON_API_URL)
 ```
 
 The JSON response will contain the new job details as per jobs.get_job
-```
 
 ### `jobs.get_job`
 
