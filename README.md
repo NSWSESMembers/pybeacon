@@ -104,6 +104,22 @@ The JSON response will contain the new status of the job (generally "Active"), a
 }
 ```
 
+#### `jobs.cancel_job`
+
+To cancel a job, first get a token (hopefully from persistent storage), then call jobs.cancel_job(). This should be used with extreme care in production, and is only useful in cleaning up trainbeacon in bulk.
+
+```
+from pybeacon import beacon_auth
+from pybeacon import jobs
+
+token = beacon_auth.get_api_token(USERNAME, PASSWORD, BEACON_URL)
+
+job = jobs.cancel_job(token.get('accessToken'), JOB_ID, BEACON_API_URL)
+```
+
+The JSON response will contain the new job details as per jobs.get_job
+```
+
 ### `jobs.get_job`
 
 To get the details of a job, first get a token (hopefully you've already persisted one somewhere), then call jobs.get_job().
